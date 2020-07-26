@@ -1,18 +1,58 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <p>{{ greetText }}</p>
+    <p>Total Greeting: {{ count }}</p>
+    <p v-if="isVip">You're VIP User!!</p>
+    <p>
+      <my-button :greet="greetText" :count="count" @clicked="onMyButtonClicked">Greet</my-button>
+    </p>
+    <p>
+      <reset-button @clicked="onResetButtonClicked"></reset-button>
+    </p>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+<script lang="ts">
+import { Component, Watch, Vue } from "vue-property-decorator";
+import MyButton from "@/components/MyButton.vue";
+import ResetButton from "@/components/ResetButton.vue";
 
-export default {
-  name: 'Home',
+@Component({
   components: {
-    HelloWorld
+    MyButton,
+    ResetButton
+  }
+})
+export default class Home extends Vue {
+  private count: number = 0;
+  public greetText: string = "Hello!!";
+
+  //computed property
+  public get isVip(): boolean {
+    return this.count >= 5;
+  }
+
+  /** ライフサイクルフック */
+  public created() {
+    console.log("created");
+  }
+
+  @Watch("count")
+  public gotVip() {
+    if (this.count === 5) {
+      alert("Congratulations! Now You're VIP!");
+    }
+  }
+
+  public onMyButtonClicked(count: number) {
+    this.greetText = "Hello Again!!";
+
+    this.count++;
+  }
+
+  public onResetButtonClicked() {
+    this.count = 0;
+    this.greetText = "Hello!!";
   }
 }
 </script>
