@@ -32,7 +32,7 @@ export default class Home extends Vue {
     return this.count >= 5;
   }
 
-  /** ライフサイクルフック */
+  //lifecycle hooks
   public created() {
     console.log("created");
   }
@@ -46,7 +46,6 @@ export default class Home extends Vue {
 
   public onMyButtonClicked(count: number) {
     this.greetText = "Hello Again!!";
-
     this.count++;
   }
 
